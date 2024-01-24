@@ -9,3 +9,5 @@ This project has very simple login and registration and requires a unique userna
 ### Assignment Dashboard
 
 This assignment dashboard has a table view of all of the student's assignments. It can be sorted ascending or descending for each column.
+
+![example assignment tracker dashboard](./public/Assignments.PNG)
