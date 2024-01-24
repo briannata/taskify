@@ -6,7 +6,6 @@ import ArrowDownIcon from "./img/ArrowDown";
 import TextIcon from "./Text";
 import MultiIcon from "./img/Multi";
 import HashIcon from "./img/Hash";
-import PlusIcon from "./img/Plus";
 import {shortId} from "./utils";
 
 export default function Header({
@@ -23,9 +22,6 @@ export default function Header({
     strategy: "absolute"
   });
   const [header, setHeader] = useState(label);
-  const [typeReferenceElement, setTypeReferenceElement] = useState(null);
-  const [typePopperElement, setTypePopperElement] = useState(null);
-  const [showType, setShowType] = useState(false);
   const buttons = [
     {
       onClick: (e) => {
@@ -44,36 +40,6 @@ export default function Header({
       },
       icon: <ArrowDownIcon />,
       label: "Sort descending"
-    }
-  ];
-
-  const types = [
-    {
-      onClick: (e) => {
-        dataDispatch({type: "update_column_type", columnId: id, dataType: "select"});
-        setShowType(false);
-        setExpanded(false);
-      },
-      icon: <MultiIcon />,
-      label: "Select"
-    },
-    {
-      onClick: (e) => {
-        dataDispatch({type: "update_column_type", columnId: id, dataType: "text"});
-        setShowType(false);
-        setExpanded(false);
-      },
-      icon: <TextIcon />,
-      label: "Text"
-    },
-    {
-      onClick: (e) => {
-        dataDispatch({type: "update_column_type", columnId: id, dataType: "number"});
-        setShowType(false);
-        setExpanded(false);
-      },
-      icon: <HashIcon />,
-      label: "Number"
     }
   ];
 
@@ -108,27 +74,6 @@ export default function Header({
       inputRef.select();
     }
   }, [inputRef]);
-
-  const typePopper = usePopper(typeReferenceElement, typePopperElement, {
-    placement: "right",
-    strategy: "fixed"
-  });
-
-  function handleKeyDown(e) {
-    if (e.key === "Enter") {
-      dataDispatch({type: "update_column_header", columnId: id, label: header});
-      setExpanded(false);
-    }
-  }
-
-  function handleChange(e) {
-    setHeader(e.target.value);
-  }
-
-  function handleBlur(e) {
-    e.preventDefault();
-    dataDispatch({type: "update_column_header", columnId: id, label: header});
-  }
 
   return <>
       <div {...getHeaderProps({style: {display: "inline-block"}})} className='th noselect'>

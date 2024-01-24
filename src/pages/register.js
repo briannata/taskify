@@ -10,18 +10,6 @@ function Register() {
   const [usernameError, setUsernameError] = useState("")
   const navigate = useNavigate();
 
-  const userExists = async () => {
-    const docRef = doc(db, "users", username);
-    const docSnap = await getDoc(docRef);
-
-    if (docSnap.exists()) {
-        return true;
-    } else {
-        setUsernameError("Username already exists. Please try a different username.")
-        return false;
-    }
-  }
-
   const onFormSubmit = async (e) => {
     e.preventDefault();
 

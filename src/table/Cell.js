@@ -85,10 +85,11 @@ export default function Cell({value: initialValue, row: {index}, column: {id, da
         />
       );
       break;
-    case "number":
+    case "date":
       element = (
-        <ContentEditable
-          html={(value.value && value.value.toString()) || ""}
+        <input 
+          type="date"
+          value={(value.value && value.value.toLocaleString()) || ""}
           onChange={onChange}
           onBlur={() => setValue((old) => ({value: old.value, update: true}))}
           className='data-input text-align-right'

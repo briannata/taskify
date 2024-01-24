@@ -251,7 +251,7 @@ function Dashboard() {
           id: "dueDate",
           label: "Due Date",
           accessor: "dueDate",
-          dataType: "text",
+          dataType: "date",
           width: 100,
           options: []
         }
@@ -268,10 +268,11 @@ function Dashboard() {
     }, [state.data, state.columns]);
 
   return (
-    <div className='text-white'>
+    <div className='text-white container'>
         <div className='titleContainer'>
             <div className=' w-screen text-center mt-8 text-4xl font-bold'>Assignment Tracker</div>
         </div>
+        <br />
         <div>
         <div
       style={{
