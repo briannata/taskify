@@ -1,8 +1,11 @@
 import '../App.css';
-import React, { useEffect, useReducer } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import "../table/style.css";
 import Table from "../table/Table";
 import { randomColor, shortId } from "../table/utils";
+import { useParams} from 'react-router-dom';
+import { db } from '../firebase-config';
+import { doc, getDoc } from '@firebase/firestore';
 
 function reducer(state, action) {
     switch (action.type) {
@@ -212,7 +215,11 @@ function reducer(state, action) {
     }
   }
 
-function Dashboard() {
+function Dashboard () {
+    const params = useParams();
+    const username = params.username;
+    const [userData, setUserData] = useState({})
+     
     let statuses = [
         {label: "Done", backgroundColor: '#CAFFBF'},
         {label: "In Progress", backgroundColor: '#FDFFB6'},
@@ -227,7 +234,7 @@ function Dashboard() {
           id: "assignment",
           label: "Assignment",
           accessor: "assignment",
-          minWidth: 100,
+          minWidth: 200,
           dataType: "text",
           options: []
         },
@@ -236,7 +243,7 @@ function Dashboard() {
           label: "Course",
           accessor: "music",
           dataType: "select",
-          width: 200,
+          width: 100,
           options: classes
         },
         {
@@ -244,7 +251,7 @@ function Dashboard() {
           label: "Status",
           accessor: "status",
           dataType: "select",
-          width: 200,
+          width: 100,
           options: statuses
         },
         {
@@ -265,44 +272,54 @@ function Dashboard() {
 
     useEffect(() => {
         dispatch({ type: "enable_reset" });
+        const getUserData = async (username) => {
+            const docRef = doc(db, "users", username);
+            const docSnap = await getDoc(docRef);
+        
+            if (docSnap.exists()) {
+                setUserData(docSnap.data());
+            }
+        }
+        getUserData(username);
     }, [state.data, state.columns]);
 
   return (
+    
     <div className='text-white container'>
         <div className='titleContainer'>
             <div className=' w-screen text-center mt-8 text-4xl font-bold'>Assignment Tracker</div>
         </div>
         <br />
         <div>
-        <div
-      style={{
-        width: "100vw",
-        overflowX: "hidden"
-      }}
-    >
-      <div style={{ overflow: "auto", display: "flex" }}>
-        <div
-          style={{
-            flex: "1 1 auto",
-            padding: "1rem",
-            maxWidth: 1000,
-            marginLeft: "auto",
-            marginRight: "auto"
-          }}
-        >
-          <Table
-            columns={state.columns}
-            data={state.data}
-            dispatch={dispatch}
-            skipReset={state.skipReset}
-          />
+            <div>
+                <div style={{width: "100vw",overflowX: "hidden"}}>
+                    <div style={{ overflow: "auto", display: "flex" }}>
+                        <div
+                            style={{
+                                flex: "1 1 auto",
+                                padding: "1rem",
+                                maxWidth: 1000,
+                                marginLeft: "auto",
+                                marginRight: "auto"
+                            }}
+                        > {classes.length == 0 ? 
+                            <div className='Container'>
+                                <p>Add your classes to get started.</p>
+                                <button>Add Classes</button>
+                            </div>
+                        :
+                        <Table
+                            columns={state.columns}
+                            data={state.data}
+                            dispatch={dispatch}
+                            skipReset={state.skipReset}
+                        />}
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-     
     </div>
-    </div>
-    </div>
-    
   );
 }
 

@@ -152,3 +152,11 @@ a:hover {
 .container {
   margin-top: 5rem;
 }
+
+.Container {
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 5rem;
+}

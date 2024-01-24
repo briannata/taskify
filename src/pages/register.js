@@ -19,7 +19,7 @@ function Register() {
     if (docSnap.exists()) {
       setUsernameError("Username already exists. Please try a different username.");
     } else {
-      await setDoc(doc(db, "users", username), { Username: username, Name: name });
+      await setDoc(doc(db, "users", username), { Username: username, Name: name, Classes: [] });
       navigate("/" + username);
     }
 

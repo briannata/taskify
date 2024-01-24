@@ -45,7 +45,7 @@ export default function Header({
 
   let propertyIcon;
   switch (dataType) {
-    case "number":
+    case "date":
       propertyIcon = <HashIcon />;
       break;
     case "text":
