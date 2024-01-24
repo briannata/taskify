@@ -1,10 +1,8 @@
 import '../App.css';
 import React, { useEffect, useReducer } from "react";
 import "../table/style.css";
-import makeData from "../table/makeData";
 import Table from "../table/Table";
 import { randomColor, shortId } from "../table/utils";
-import { grey } from "../table/colors";
 
 function reducer(state, action) {
     switch (action.type) {
@@ -215,15 +213,62 @@ function reducer(state, action) {
   }
 
 function Dashboard() {
+    let statuses = [
+        {label: "Done", backgroundColor: '#CAFFBF'},
+        {label: "In Progress", backgroundColor: '#FDFFB6'},
+        {label: "Not Started", backgroundColor: '#FFADAD'}
+    ];
 
-    const [state, dispatch] = useReducer(reducer, makeData(10));
+    let data = [];
+    let classes = [];
+
+    let columns = [
+        {
+          id: "assignment",
+          label: "Assignment",
+          accessor: "assignment",
+          minWidth: 100,
+          dataType: "text",
+          options: []
+        },
+        {
+          id: "course",
+          label: "Course",
+          accessor: "music",
+          dataType: "select",
+          width: 200,
+          options: classes
+        },
+        {
+          id: "status",
+          label: "Status",
+          accessor: "status",
+          dataType: "select",
+          width: 200,
+          options: statuses
+        },
+        {
+          id: "dueDate",
+          label: "Due Date",
+          accessor: "dueDate",
+          dataType: "text",
+          width: 100,
+          options: []
+        }
+      ];
+
+    let assignmentData = {
+        columns: columns,
+        data: data
+    }
+    const [state, dispatch] = useReducer(reducer, assignmentData);
 
     useEffect(() => {
         dispatch({ type: "enable_reset" });
     }, [state.data, state.columns]);
 
   return (
-    <div className='text-white mainContainer'>
+    <div className='text-white'>
         <div className='titleContainer'>
             <div className=' w-screen text-center mt-8 text-4xl font-bold'>Assignment Tracker</div>
         </div>
@@ -231,7 +276,6 @@ function Dashboard() {
         <div
       style={{
         width: "100vw",
-        height: "100vh",
         overflowX: "hidden"
       }}
     >
@@ -253,27 +297,9 @@ function Dashboard() {
           />
         </div>
       </div>
-      <div
-        style={{
-          height: 140,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          flexDirection: "column"
-        }}
-      >
-        <p style={{ color: grey(600) }}>
-          Built by{" "}
-          <a
-            href="https://twitter.com/thesysarch"
-            style={{ color: grey(600), fontWeight: 600 }}
-          >
-            @thesysarch
-          </a>
-        </p>
-      </div>
+     
     </div>
-        </div>
+    </div>
     </div>
     
   );

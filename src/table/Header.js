@@ -3,9 +3,6 @@ import {usePopper} from "react-popper";
 import {grey} from "./colors";
 import ArrowUpIcon from "./img/ArrowUp";
 import ArrowDownIcon from "./img/ArrowDown";
-import ArrowLeftIcon from "./img/ArrowLeft";
-import ArrowRightIcon from "./img/ArrowRight";
-import TrashIcon from "./img/Trash";
 import TextIcon from "./Text";
 import MultiIcon from "./img/Multi";
 import HashIcon from "./img/Hash";
@@ -47,33 +44,6 @@ export default function Header({
       },
       icon: <ArrowDownIcon />,
       label: "Sort descending"
-    },
-    {
-      onClick: (e) => {
-        dataDispatch({type: "update_column_header", columnId: id, label: header});
-        dataDispatch({type: "add_column_to_left", columnId: id, focus: false});
-        setExpanded(false);
-      },
-      icon: <ArrowLeftIcon />,
-      label: "Insert left"
-    },
-    {
-      onClick: (e) => {
-        dataDispatch({type: "update_column_header", columnId: id, label: header});
-        dataDispatch({type: "add_column_to_right", columnId: id, focus: false});
-        setExpanded(false);
-      },
-      icon: <ArrowRightIcon />,
-      label: "Insert right"
-    },
-    {
-      onClick: (e) => {
-        dataDispatch({type: "update_column_header", columnId: id, label: header});
-        dataDispatch({type: "delete_column", columnId: id});
-        setExpanded(false);
-      },
-      icon: <TrashIcon />,
-      label: "Delete"
     }
   ];
 
@@ -160,8 +130,7 @@ export default function Header({
     dataDispatch({type: "update_column_header", columnId: id, label: header});
   }
 
-  return id !== 999999 ? (
-    <>
+  return <>
       <div {...getHeaderProps({style: {display: "inline-block"}})} className='th noselect'>
         <div className='th-content' onClick={() => setExpanded(true)} ref={setReferenceElement}>
           <span className='svg-icon svg-gray icon-margin'>{propertyIcon}</span>
@@ -177,56 +146,7 @@ export default function Header({
             style={{
               width: 240
             }}>
-            <div style={{paddingTop: "0.75rem", paddingLeft: "0.75rem", paddingRight: "0.75rem"}}>
-              <div className='is-fullwidth' style={{marginBottom: 12}}>
-                <input
-                  className='form-input'
-                  ref={setInputRef}
-                  type='text'
-                  value={header}
-                  style={{width: "100%"}}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  onKeyDown={handleKeyDown}
-                />
-              </div>
-              <span className='font-weight-600 font-size-75' style={{textTransform: "uppercase", color: grey(500)}}>
-                Property Type
-              </span>
-            </div>
-            <div style={{padding: "4px 0px"}}>
-              <button
-                className='sort-button'
-                type='button'
-                onMouseEnter={() => setShowType(true)}
-                onMouseLeave={() => setShowType(false)}
-                ref={setTypeReferenceElement}>
-                <span className='svg-icon svg-text icon-margin'>{propertyIcon}</span>
-                <span style={{textTransform: "capitalize"}}>{dataType}</span>
-              </button>
-              {showType && (
-                <div
-                  className='shadow-5 bg-white border-radius-m'
-                  ref={setTypePopperElement}
-                  onMouseEnter={() => setShowType(true)}
-                  onMouseLeave={() => setShowType(false)}
-                  {...typePopper.attributes.popper}
-                  style={{
-                    ...typePopper.styles.popper,
-                    width: 200,
-                    backgroundColor: "white",
-                    zIndex: 4,
-                    padding: "4px 0px"
-                  }}>
-                  {types.map((type) => (
-                    <button className='sort-button' onClick={type.onClick}>
-                      <span className='svg-icon svg-text icon-margin'>{type.icon}</span>
-                      {type.label}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
+            
             <div
               key={shortId()}
               style={{
@@ -244,16 +164,4 @@ export default function Header({
         </div>
       )}
     </>
-  ) : (
-    <div {...getHeaderProps({style: {display: "inline-block"}})} className='th noselect'>
-      <div
-        className='th-content'
-        style={{display: "flex", justifyContent: "center"}}
-        onClick={(e) => dataDispatch({type: "add_column_to_left", columnId: 999999, focus: true})}>
-        <span className='svg-icon-sm svg-gray'>
-          <PlusIcon />
-        </span>
-      </div>
-    </div>
-  );
 }
